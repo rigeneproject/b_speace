@@ -77,4 +77,5 @@ bspace bridge run -t 10     # run BioOrchestrator coupled to hybrid quantum kern
 - [T001 — B-SPEACE Modular Architecture & Protocol/Adapter Specification](docs/T001_BSPEACE_ARCHITECTURE_SPEC.md)
 - [T002 — Industry P–Q–B: Hybrid Classical–Quantum–Biological Computing Architecture](docs/T002_INDUSTRY_PQB_FRAMEWORK.md)
 - [T003 — Digital Water-Treatment Filter Testbed & P–Q–B Benchmark Spec](docs/T003_WATER_FILTER_PQB_BENCHMARK_SPEC.md) · [Living Task Tracker](docs/T003_TASKS.md)
+- [T005 — Multi-Substrate Functional Continuity Transfer Lab (`b_speace` → `q_speace`)](docs/T005_CONTINUITY_TRANSFER_LAB_SPEC.md) · [Task Registry](docs/T005_TASKS.md)
 - See [AGENTS.md](AGENTS.md) for engineering discipline, BCEL rules, and safety invariants.
