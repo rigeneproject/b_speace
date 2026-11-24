@@ -46,8 +46,10 @@ b_speace/
 |---|---|---|
 | BCEL Gate | `b_speace/bcel/` | `BCELCatalog`, `BCELEquivalence` |
 | Bio-Electric | `b_speace/bioelectric/` | `BioElectricSimulator`, `BioSignalEncoder`, `BioSignalDecoder`, `FitzHughNagumoAdapter`, `PopulationRateCodec` |
+| Biomolecular (Cell-Free) | `b_speace/biomolecular/` | `BiomolecularSensor`, `ReferenceAssayPort`, `CellFreeThresholdSensorAdapter`, `SimulatedReferenceAssayAdapter` |
 | Wetware-in-the-Loop | `b_speace/organoid/` | `OrganoidInterface`, `WetwareSafetyGate`, `BaseOrganoidAdapter`, `SimulatedOrganoidAdapter`, `ChargeDensitySafetyGate` |
 | `q_speace` Interop | `b_speace/interop/` | `QuantumKernelPort`, `BioQuantumAdapter`, `QSpeaceKernelAdapter`, `StandaloneQuantumKernelAdapter` |
+| P–Q–B Benchmarks | `b_speace/benchmarks/water_filter/` | `WaterFilterTwin`, `FilterTrialController`, `CandidateRanker`, `QuantumInteractionRanker`, `run_four_way_ablation` |
 | Runtime | `b_speace/orchestrator.py` | `BioOrchestrator`, `BioTickReport` |
 
 ## Installation
@@ -74,4 +76,5 @@ bspace bridge run -t 10     # run BioOrchestrator coupled to hybrid quantum kern
 
 - [T001 — B-SPEACE Modular Architecture & Protocol/Adapter Specification](docs/T001_BSPEACE_ARCHITECTURE_SPEC.md)
 - [T002 — Industry P–Q–B: Hybrid Classical–Quantum–Biological Computing Architecture](docs/T002_INDUSTRY_PQB_FRAMEWORK.md)
+- [T003 — Digital Water-Treatment Filter Testbed & P–Q–B Benchmark Spec](docs/T003_WATER_FILTER_PQB_BENCHMARK_SPEC.md) · [Living Task Tracker](docs/T003_TASKS.md)
 - See [AGENTS.md](AGENTS.md) for engineering discipline, BCEL rules, and safety invariants.

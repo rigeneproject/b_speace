@@ -95,6 +95,42 @@ _BIO_EQUIVALENCES: tuple[BCELEquivalence, ...] = (
             "occur via classical measurement outcomes and classical telemetry packets."
         ),
     ),
+    # --- T002 / T003: Industry P-Q-B & Cell-Free Water-Filter Benchmark ---
+    BCELEquivalence(
+        concept="Cell-free allosteric threshold biosensing (ROSALIND-style Hill transduction)",
+        classification="functional",
+        digital_rule=(
+            "Keep as a calibrated Hill transfer function with explicit incubation lag, "
+            "stochastic readout noise, matrix interference, and drift parameters, always "
+            "paired with independent reference assay verification."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Fixed-bed breakthrough dynamics normalized by treated volume (Thomas / Bohart-Adams)",
+        classification="functional",
+        digital_rule=(
+            "Keep as a hidden-state physical twin separating equilibrium capacity from "
+            "mass-transfer kinetics across flow rates at equal treated volume V = Q * t."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Simplex-inspired uncertainty and drift fail-closed switching (P-Q-B)",
+        classification="functional",
+        digital_rule=(
+            "Keep as a deterministic supervisor downgrading B on reference-assay "
+            "disagreement/drift or downgrading Q on high uncertainty / Sevo gate block, "
+            "falling back safely to classical models and reference assays."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Speculative retrocausal bio-quantum learning or vitalist wetware optimization",
+        classification="accidental",
+        digital_rule=(
+            "Removed: excluded from runtime architecture and claims; P-Q-B value is "
+            "established solely through causal closed-loop provenance and pre-registered "
+            "4-way ablations (P, P+B, P+Q, P+Q+B)."
+        ),
+    ),
 )
 
 

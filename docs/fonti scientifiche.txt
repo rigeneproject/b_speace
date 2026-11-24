@@ -1,0 +1,39 @@
+Il framework P–Q–B completo (closed-loop industriale con governance fail-closed dell’incertezza + ablazione sistematica) è ancora prevalentemente concettuale: non esiste ancora una letteratura consolidata che lo descriva esattamente in questi termini. Tuttavia esistono solide basi parziali nei tre layer e in alcune integrazioni ibride. Ecco una selezione delle fonti più serie e pertinenti, organizzate per tema.
+
+1. Layer B – Biological computing / Cell-free biosensori (particolarmente rilevante per il caso water-treatment)
+Jung et al. (2020) – Cell-free biosensors for rapid detection of water contaminants. Nature Biotechnology.
+Sistema ROSALIND (cell-free transcription + aptameri fluorescenti) per rilevare metalli, antibiotici e piccole molecole in acqua. Dimostra funzionamento freeze-dried e test sul campo. È la fonte più diretta e citata per il tipo di B descritto nel tuo documento.
+[Link](https://www.nature.com/articles/s41587-020-0571-7)
+
+Lavori successivi e review su biosensori cell-free per monitoraggio ambientale e contaminanti (inclusi pesticidi come atrazine, metalli, ecc.). Vedi anche sviluppi recenti con active learning / ML-guided engineering di fattori di trascrizione allosterici per sensibilità selettiva (es. piombo in acqua potabile).
+
+2. Layer Q – Quantum computing per energie di legame / materiali (filtri, adsorbenti, cattura)
+Barroca et al. (2024) – Exploration of Quantum Computing in Materials Discovery for Direct Air Capture Applications. arXiv:2404.13122 (poi pubblicato su APL Quantum).
+Calcolo di potenziali di legame (CO₂, N₂, H₂O su siti metallici tipo MOF) con qubit-ADAPT-VQE su hardware quantistico. Confronto diretto con metodi classici. Molto vicino all’uso di Q per binding energies di candidati materiali filtranti.
+
+Lavori recenti su predizione di siti di idratazione in tasche proteiche e interazioni non-covalenti su processori IBM Heron (fino a 123 qubit), e simulazioni di chemisorption di CO₂ in MOF amine-functionalized. Questi mostrano lo stato dell’arte di Q per problemi di interazione molecolare rilevanti per materiali di trattamento acque/cattura.
+
+Report e analisi industriali (McKinsey e collaborazioni tipo BASF, Mitsubishi Chemical, Volkswagen) sull’uso di quantum computing in chimica e materiali, con enfasi su simulazioni di legame e formulazioni.
+
+3. Architetture ibride Classical–Quantum (P + Q)
+Lavori su Architectural Design and Orchestration of Heterogeneous Quantum-Classical Computing Systems (integrazione in ambienti HPC europei, layer di calibrazione NISQ, orchestrazione di workload ibridi, validazione con VQE).
+
+Framework ibridi per uncertainty quantification (es. quantum-classical hybrid ML per digital twin e resiliency, con analisi di propagazione dell’incertezza al variare del numero di qubit).
+
+Approcci “fail-closed” o safety-aware: architetture Simplex-inspired che commutano dinamicamente tra modello quantistico ad alte prestazioni e modello classico ad alta affidabilità in base a indicatori di sicurezza.
+
+4. Quantum–Biological / Biocomputing ibrido
+Libri e lavori di Hafiz Md. Hasan Babu (Multiple-Valued Computing in Quantum Molecular Biology e Quantum Biocomputing in Quantum Biology, Springer/CRC). Trattano circuiti DNA-quantum, quantum-DNA, memory devices e nanoprocessori in un’ottica ibrida molecolare.
+
+Lavori più recenti (preprint e conference) su Quantum-Bio-Hybrid paradigm (retrocausal learning, neuromorphic realization, interfacce con BCI e controlli etici). Sono più speculativi e orientati all’AGI/neuromorfico.
+
+Organoid Intelligence + quantum: paper recenti su framework ibridi organoidi + quantum (es. regressione lineare bio-quantum) e test-bed di quantum biosensing ispirati a reti neurali viventi (es. finanziamento AFOSR a University of Maryland).
+
+5. Uncertainty, closed-loop e governance multi-scala
+Letteratura su uncertainty quantification in sistemi ibridi quantum-classical e in closed-loop dinamici (Unscented Transformation, Polynomial Chaos, Bayesian hybrid models).
+Lavori su hybrid quantum-classical control e tracciamento end-to-end di workflow ibridi in ambienti HPC/supercomputing.
+Osservazioni utili 
+Il pezzo più maturo e “ready-to-use” è il layer B cell-free per contaminanti in acqua (Nature Biotechnology 2020 e follow-up).
+Il layer Q per binding energies di materiali è in forte sviluppo (DAC, MOF, interazioni molecolari) ma ancora in fase di dimostrazione di vantaggio netto rispetto a DFT/ML potentials a budget confrontabile.
+Le architetture di orchestrazione P–Q e i meccanismi di fallback/safety esistono in forma parziale.
+L’integrazione chiusa a tre layer con ablazione industriale pre-registrata e metriche di costo fisso vs marginale come nel tuo documento resta ancora rara o assente nella letteratura peer-reviewed consolidata.

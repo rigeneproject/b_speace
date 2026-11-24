@@ -5,16 +5,25 @@ Mirrors the Typer subcommand structure of ``q_speace/cli.py``:
   - ``bspace bio ...``       — Bio-electric signal simulation
   - ``bspace organoid ...``  — Wetware-in-the-loop MEA twin probe
   - ``bspace bridge ...``    — Hybrid bio-quantum orchestrator loop
+  - ``bspace benchmark ...`` — Industry P-Q-B reproducible benchmarks (T003)
 """
 
 from __future__ import annotations
 
 import asyncio
 import json
+from dataclasses import asdict
+from pathlib import Path
+from typing import Annotated
 
 import typer
 
 from .bcel import BCELCatalog
+from .benchmarks import (
+    run_four_way_ablation,
+    run_p_vs_pb_experiment,
+    run_parametric_b_sweep,
+)
 from .bioelectric import FitzHughNagumoAdapter, PopulationRateCodec, StimulationPulse
 from .orchestrator import BioOrchestrator
 from .organoid import SimulatedOrganoidAdapter, StimulationCommand
@@ -24,11 +33,13 @@ bcel_app = typer.Typer(help="BCEL biological-cybernetic equivalence catalog")
 bio_app = typer.Typer(help="Bio-electric signal simulation")
 organoid_app = typer.Typer(help="Wetware-in-the-loop computational organoid twin")
 bridge_app = typer.Typer(help="Hybrid B-SPEACE <-> Q-SPEACE orchestrator")
+benchmark_app = typer.Typer(help="Industry P-Q-B closed-loop benchmarks (T003)")
 
 app.add_typer(bcel_app, name="bcel")
 app.add_typer(bio_app, name="bio")
 app.add_typer(organoid_app, name="organoid")
 app.add_typer(bridge_app, name="bridge")
+app.add_typer(benchmark_app, name="benchmark")
 
 
 @bcel_app.command("list")
@@ -132,3 +143,36 @@ def bridge_run(
             await orch.stop()
 
     typer.echo(json.dumps(asyncio.run(_run()), indent=2))
+
+
+@benchmark_app.command("water-filter")
+def benchmark_water_filter(
+    mode: str = typer.Option("four-way", "--mode", "-m", help="p-vs-pb | four-way | sweep"),
+    seeds: int = typer.Option(5, "--seeds", "-n", min=1, max=50),
+    prefer_qspeace: bool = typer.Option(True, "--prefer-qspeace/--standalone"),
+    out: Annotated[
+        Path | None, typer.Option("--out", "-o", help="Optional JSON output file")
+    ] = None,
+) -> None:
+    """Run the T003 digital water-treatment filter P-Q-B closed-loop benchmark."""
+    seed_list = tuple(11 * (i + 1) for i in range(seeds))
+    if mode == "p-vs-pb":
+        report = run_p_vs_pb_experiment(seeds=seed_list)
+        payload: dict[str, object] = report.to_dict()
+    elif mode == "four-way":
+        report = run_four_way_ablation(seeds=seed_list, prefer_qspeace=prefer_qspeace)
+        payload = report.to_dict()
+    elif mode == "sweep":
+        points = run_parametric_b_sweep(seeds=seed_list[: min(3, len(seed_list))])
+        payload = {
+            "experiment_name": "T003_parametric_b_sweep",
+            "points": [asdict(p) for p in points],
+        }
+    else:
+        raise typer.BadParameter("mode must be one of: p-vs-pb, four-way, sweep")
+
+    rendered = json.dumps(payload, indent=2)
+    if out is not None:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(rendered + "\n", encoding="utf-8")
+    typer.echo(rendered)
