@@ -17,8 +17,14 @@ def test_bcel_catalog_contains_functional_and_accidental_entries() -> None:
 def test_bcel_no_consciousness_and_no_ftl_invariants() -> None:
     catalog = BCELCatalog()
     accidental_text = " ".join(e.concept.lower() for e in catalog.accidental())
+    functional_text = " ".join(e.concept.lower() for e in catalog.functional())
     assert "consciousness" in accidental_text
+    assert "mind-copying" in accidental_text
     assert "non-local" in accidental_text or "ftl" in accidental_text
+    assert "epoch fencing" in functional_text
+    assert "dequantization" in functional_text
+    assert "ema" in functional_text
+    assert "anti-abstention" in functional_text
 
 
 def test_bcel_custom_entries_override() -> None:

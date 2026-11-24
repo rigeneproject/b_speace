@@ -131,6 +131,54 @@ _BIO_EQUIVALENCES: tuple[BCELEquivalence, ...] = (
             "4-way ablations (P, P+B, P+Q, P+Q+B)."
         ),
     ),
+    # --- T005: Multi-Substrate Functional Continuity Transfer Lab (b_speace -> q_speace) ---
+    BCELEquivalence(
+        concept="Replicated state-machine prefix framing, epoch fencing, and destination idempotency (T005 H1/H2)",
+        classification="functional",
+        digital_rule=(
+            "Keep as deterministic append-only CommittedFrame logs, monotonic epoch "
+            "mandates rejecting stale holders (including same-ID re-assignment), "
+            "out-of-order gap cursors, and idempotent destination deduplication per "
+            "(session, tick, action_id)."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Information-matched bio-inspired vs. classical EMA temporal ablation (T005 H3)",
+        classification="functional",
+        digital_rule=(
+            "Keep as a fairness control comparing FitzHugh-Nagumo features against "
+            "classical EMA memory on identical inputs, equal hyperparameter grid "
+            "budgets, disjoint seed splits, and paired bootstrap CI (archiving null "
+            "results explicitly)."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Analytical quantum dequantization equivalence gate (T005 H4)",
+        classification="functional",
+        digital_rule=(
+            "Keep as a numerical verification gate checking single-qubit embeddings "
+            "against closed-form cos^2[pi*(x-p)/2] within 1e-12 and explicitly "
+            "declaring classical sufficiency whenever quantum advantage is absent."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Anti-abstention coverage-weighted fault evaluation metric (T005 M2b)",
+        classification="functional",
+        digital_rule=(
+            "Keep as joint reporting of accuracy on executed commands and fraction of "
+            "evaluable ticks with a correct accepted action (counting missed actions "
+            "as failures) so fail-closed controllers cannot inflate accuracy by abstaining."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Multi-substrate subjective consciousness continuity or mind-copying persistence (T005)",
+        classification="accidental",
+        digital_rule=(
+            "Removed and prohibited in runtime claims: state synchronization and "
+            "authority failover establish only operational continuity of software "
+            "replicas, never continuation of first-person subjective experience."
+        ),
+    ),
 )
 
 
