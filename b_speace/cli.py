@@ -6,6 +6,7 @@ Mirrors the Typer subcommand structure of ``q_speace/cli.py``:
   - ``bspace organoid ...``  — Wetware-in-the-loop MEA twin probe
   - ``bspace bridge ...``    — Hybrid bio-quantum orchestrator loop
   - ``bspace benchmark ...`` — Industry P-Q-B reproducible benchmarks (T003)
+  - ``bspace continuity ...``— T005 functional continuity & transfer lab (M0/M1)
 """
 
 from __future__ import annotations
@@ -25,6 +26,14 @@ from .benchmarks import (
     run_parametric_b_sweep,
 )
 from .bioelectric import FitzHughNagumoAdapter, PopulationRateCodec, StimulationPulse
+from .continuity import (
+    ContinuityEngine,
+    ContinuityMode,
+    FaultSpec,
+    StandbyMode,
+    run_m1_regression_matrix,
+    write_campaign_bundle,
+)
 from .orchestrator import BioOrchestrator
 from .organoid import SimulatedOrganoidAdapter, StimulationCommand
 
@@ -34,12 +43,14 @@ bio_app = typer.Typer(help="Bio-electric signal simulation")
 organoid_app = typer.Typer(help="Wetware-in-the-loop computational organoid twin")
 bridge_app = typer.Typer(help="Hybrid B-SPEACE <-> Q-SPEACE orchestrator")
 benchmark_app = typer.Typer(help="Industry P-Q-B closed-loop benchmarks (T003)")
+continuity_app = typer.Typer(help="T005 functional continuity verification (M0/M1)")
 
 app.add_typer(bcel_app, name="bcel")
 app.add_typer(bio_app, name="bio")
 app.add_typer(organoid_app, name="organoid")
 app.add_typer(bridge_app, name="bridge")
 app.add_typer(benchmark_app, name="benchmark")
+app.add_typer(continuity_app, name="continuity")
 
 
 @bcel_app.command("list")
@@ -176,3 +187,79 @@ def benchmark_water_filter(
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(rendered + "\n", encoding="utf-8")
     typer.echo(rendered)
+
+
+@continuity_app.command("run")
+def continuity_run(
+    mode: str = typer.Option("P", "--mode", "-m", help="P | P+Q | P+B | P+Q+B"),
+    standby: str = typer.Option("warm", "--standby", "-s", help="warm | cold"),
+    fault_tick: int = typer.Option(8, "--fault-tick", "-f", min=0),
+    replay_budget: int = typer.Option(2, "--replay-budget", "-r", min=1),
+    ticks: int = typer.Option(24, "--ticks", "-t", min=1),
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
+    """Run a single deterministic T005 functional continuity session (M0)."""
+    try:
+        c_mode = ContinuityMode(mode)
+    except ValueError as exc:
+        raise typer.BadParameter("mode must be one of: P, P+Q, P+B, P+Q+B") from exc
+    try:
+        s_mode = StandbyMode(standby)
+    except ValueError as exc:
+        raise typer.BadParameter("standby must be one of: warm, cold") from exc
+
+    engine = ContinuityEngine()
+    rec = engine.run(
+        mode=c_mode,
+        fault=FaultSpec(fault_tick=fault_tick, replay_budget=replay_budget, standby_mode=s_mode),
+        horizon_ticks=ticks,
+        seed=seed,
+    )
+    payload = {
+        "session_id": rec.session_id,
+        "input_hash": rec.input_hash,
+        "mode": rec.mode.value,
+        "standby_mode": rec.standby_mode.value,
+        "fault_tick": rec.fault_tick,
+        "replay_budget": rec.replay_budget,
+        "first_recovery_tick": rec.first_recovery_tick,
+        "missed_actions": rec.missed_actions,
+        "expected_missed_actions": rec.expected_missed_actions,
+        "background_updates_before_fault": rec.background_updates_before_fault,
+        "authority_violations": rec.authority_violations,
+        "duplicate_effects": rec.duplicate_effects,
+        "max_context_error": rec.max_context_error,
+        "winner_replica": rec.winner_replica,
+    }
+    typer.echo(json.dumps(payload, indent=2))
+
+
+@continuity_app.command("evaluate")
+def continuity_evaluate(
+    seed: int = typer.Option(42, "--seed"),
+    ticks: int = typer.Option(24, "--ticks", "-t", min=1),
+    output: Annotated[
+        Path | None, typer.Option("--output", "-o", help="Directory for M1 campaign bundle")
+    ] = None,
+) -> None:
+    """Run the full T005-B M1 regression matrix, H2 fault drills, and H4 equivalence gate."""
+    summary = run_m1_regression_matrix(seed=seed, horizon_ticks=ticks)
+    written: dict[str, str] = {}
+    if output is not None:
+        paths = write_campaign_bundle(output, summary)
+        written = {k: str(v) for k, v in paths.items()}
+    payload = {
+        "all_passed": summary.all_passed,
+        "total_matrix_runs": summary.total_matrix_runs,
+        "oracle_exact_matches": summary.oracle_exact_matches,
+        "q_on_off_exact_matches": summary.q_on_off_exact_matches,
+        "total_authority_violations": summary.total_authority_violations,
+        "total_duplicate_effects": summary.total_duplicate_effects,
+        "max_context_error": summary.max_context_error,
+        "h2_drills_passed": summary.h2_drills.all_passed,
+        "h4_grid_points": summary.h4_equivalence.grid_points_tested,
+        "h4_max_abs_error": summary.h4_equivalence.max_abs_error,
+        "h4_classical_sufficient": summary.h4_equivalence.classical_sufficient,
+        "bundle_files": written,
+    }
+    typer.echo(json.dumps(payload, indent=2))

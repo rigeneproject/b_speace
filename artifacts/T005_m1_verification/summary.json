@@ -1,0 +1,53 @@
+{
+  "all_passed": true,
+  "h2_drills": {
+    "all_passed": true,
+    "drills": [
+      {
+        "detail": "stale_reason=stale_epoch, valid_accepted=True",
+        "drill_name": "stale_epoch_after_same_holder_reassignment",
+        "passed": true
+      },
+      {
+        "detail": "retry_dedup=True, conflict_reason=incompatible_action_id_for_tick, applied=1",
+        "drill_name": "duplicate_retry_idempotency_and_conflict_rejection",
+        "passed": true
+      },
+      {
+        "detail": "cursor_at_gap=1, final_cursor=3, updates=3",
+        "drill_name": "out_of_order_gap_cursor_and_rejoin",
+        "passed": true
+      },
+      {
+        "detail": "favored=bio_robotica, elected_when_lagging=robotica, blackout_missed=16",
+        "drill_name": "lagging_favored_excluded_and_total_blackout",
+        "passed": true
+      },
+      {
+        "detail": "tie_winner=bio_robotica, fallbacks=2",
+        "drill_name": "q_unavailable_fallback_non_finite_and_tie_break",
+        "passed": true
+      }
+    ]
+  },
+  "h4_equivalence": {
+    "all_passed": true,
+    "classical_sufficient": true,
+    "fallback_passed": true,
+    "grid_passed": true,
+    "grid_points_tested": 10201,
+    "invalid_input_rejected": true,
+    "max_abs_error": 4.440892098500626e-16,
+    "tie_cases_passed": true,
+    "tolerance": 1e-12
+  },
+  "horizon_ticks": 24,
+  "max_context_error": 0.0,
+  "oracle_exact_matches": 200,
+  "q_on_off_exact_matches": 100,
+  "schema": "t005.summary.v1",
+  "seed": 42,
+  "total_authority_violations": 0,
+  "total_duplicate_effects": 0,
+  "total_matrix_runs": 200
+}

@@ -1,0 +1,10 @@
+{
+  "config_sha256": "167bd808c0361fa679b8d2ff7b928f7d8f34645ccd469048294199fca2686fca",
+  "horizon_ticks": 24,
+  "numpy_version": "2.4.4",
+  "python_version": "3.12.10",
+  "rng": "PCG64",
+  "schema": "t005.manifest.v1",
+  "seed": 42,
+  "total_matrix_runs": 200
+}

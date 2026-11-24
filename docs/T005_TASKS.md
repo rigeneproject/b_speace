@@ -28,8 +28,8 @@ the initial study (`docs/Project_1/`) cleanly on GitHub:
 
 | Order | Task ID | Status | Milestone & Scope | Primary Hypothesis |
 |---:|---|---|---|---|
-| 7 | `T005-IMP-01` | `[ ]` | **M0 · Core Continuity Contracts**: implement `b_speace/continuity/{types,protocols,engine}.py` (`Observation`, `CommittedFrame`, `ReplicaState`, `Grant`, `Command`, idempotent destination deduplication, `bspace continuity run`) | Baseline regression |
-| 8 | `T005-IMP-02` | `[ ]` | **M1 · Fault Injection & Oracles (`H1`/`H2`/`H4`)**: 50-case deterministic warm/cold matrix (`f ∈ {1,2,7,8,17}`, `r ∈ {1,2,3,4,8}`), stale-epoch/duplicate/out-of-order/all-disconnected drills, independent prefix oracle, and 1-qubit vs. `cos^2[pi(x-p)/2]` grid check (`<= 1e-12`) | `H1`, `H2`, `H4` |
+| 7 | `T005-IMP-01` | `[x]` | **M0 · Core Continuity Contracts**: implement `b_speace/continuity/{types,protocols,engine}.py` (`Observation`, `CommittedFrame`, `ReplicaState`, `Grant`, `Command`, idempotent destination deduplication, `bspace continuity run`) | Baseline regression (Issue `#5`) |
+| 8 | `T005-IMP-02` | `[x]` | **M1 · Fault Injection & Oracles (`H1`/`H2`/`H4`)**: 200-run deterministic warm/cold matrix (`f ∈ {1,2,7,8,17}`, `r ∈ {1,2,3,4,8}` × 4 modes), 5 mandatory H2 fault drills, independent prefix oracle, and 1-qubit vs. `cos^2[pi(x-p)/2]` grid check (`10,201` points, max err `4.44e-16 <= 1e-12`) | `H1`, `H2`, `H4` (Issue `#5`, `artifacts/T005_m1_verification/`) |
 | 9 | `T005-IMP-03` | `[ ]` | **M2 · Fair Bio-Inspired vs. EMA Benchmark (`H3`)**: 160-tick PCG64 latent-bit generator, disjoint splits (`0–63` fit, `100–131` select, `1000–1127` held-out), L2 logistic decoder, 3-point grid for EMA & FHN, 10,000-resample paired bootstrap (`seed=20261124`) | `H3` |
 | 10 | `T005-IMP-04` | `[ ]` | **M2b · Combined Fault + Anti-Abstention Evaluation**: run `H3` traces with tick-64 fault (`r=2`), reporting executed-command accuracy AND evaluable-tick accuracy (missed actions = failures) + campaign bundle (`manifest.json`, `trials.jsonl`, `trace.jsonl`, `summary.json`) | `H2 + H3` |
 | 11 | `T005-IMP-05` | `[ ]` | **M3 · Multi-Process Latency & Failover Harness**: separate OS coordinator/replica processes using host monotonic clock, fault injector, median/p95 recovery latency, gap & recovery-fraction reporting | `H1`, `H2` (real timing) |
@@ -55,3 +55,16 @@ the initial study (`docs/Project_1/`) cleanly on GitHub:
 |---|---|---|
 | `T005-DEF-01` | `[ ]` | Offline replay compatibility adapter for public PhysioNet EEG Motor Movement/Imagery dataset (optional extra; decoding test only, no persistence claim) |
 | `T005-DEF-02` | `[ ]` | Separate ethics-reviewed VR telepresence protocol (`H5`: VEQ, real vs. sham switches, motion-to-photon latency) — only after `M1`–`M3` complete |
+
+---
+
+## Measured Evidence Log (`M0` / `M1`, 2026-11-24)
+
+Source bundle: [`artifacts/T005_m1_verification/`](../artifacts/T005_m1_verification/summary.json) (`manifest.json`, `trials.jsonl`, `trace.jsonl`, `summary.json`).
+
+| Gate | Measured Outcome | Status |
+|---|---|---|
+| `H1` · Deterministic warm/cold matrix (`T=24`, `f ∈ {1,2,7,8,17}`, `r ∈ {1,2,3,4,8}`, 4 modes) | `200 / 200` exact matches vs. closed-form oracle (`f=8, r=2`: warm `0` missed / `24` pre-fault updates; cold `7` missed / tick `15` recovery) | **PASS** |
+| `H2` · Authority & state integrity (matrix + 5 fault drills) | `0` authority violations, `0` duplicate effects, `max_context_error = 0.0`, `5 / 5` drills passed (stale epoch on same-holder re-assignment, idempotent retry & conflict rejection, out-of-order gap cursor, lagging favored replica + total blackout, `Q` fallback + tie break) | **PASS** |
+| `H4` · Quantum analytical dequantization grid (`[0,1]^2`, `step=0.01`) | `10,201` grid points, `max_abs_error = 4.44e-16 <= 1e-12`, `100 / 100` `Q` on/off exact winner matches, `classical_sufficient = true` | **PASS** |
+

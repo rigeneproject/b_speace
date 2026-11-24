@@ -50,6 +50,7 @@ b_speace/
 | Wetware-in-the-Loop | `b_speace/organoid/` | `OrganoidInterface`, `WetwareSafetyGate`, `BaseOrganoidAdapter`, `SimulatedOrganoidAdapter`, `ChargeDensitySafetyGate` |
 | `q_speace` Interop | `b_speace/interop/` | `QuantumKernelPort`, `BioQuantumAdapter`, `QSpeaceKernelAdapter`, `StandaloneQuantumKernelAdapter` |
 | P–Q–B Benchmarks | `b_speace/benchmarks/water_filter/` | `WaterFilterTwin`, `FilterTrialController`, `CandidateRanker`, `QuantumInteractionRanker`, `run_four_way_ablation` |
+| Continuity Transfer Lab | `b_speace/continuity/` | `ContinuityEngine`, `AppendOnlyFrameLog`, `VirtualDestinationEndpoint`, `IndependentPrefixOracle`, `QuantumSingleQubitMatcher`, `run_m1_regression_matrix` |
 | Runtime | `b_speace/orchestrator.py` | `BioOrchestrator`, `BioTickReport` |
 
 ## Installation
