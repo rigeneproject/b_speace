@@ -73,4 +73,5 @@ bspace bridge run -t 10     # run BioOrchestrator coupled to hybrid quantum kern
 ## Engineering Specifications & Invariants
 
 - [T001 — B-SPEACE Modular Architecture & Protocol/Adapter Specification](docs/T001_BSPEACE_ARCHITECTURE_SPEC.md)
+- [T002 — Industry P–Q–B: Hybrid Classical–Quantum–Biological Computing Architecture](docs/T002_INDUSTRY_PQB_FRAMEWORK.md)
 - See [AGENTS.md](AGENTS.md) for engineering discipline, BCEL rules, and safety invariants.
