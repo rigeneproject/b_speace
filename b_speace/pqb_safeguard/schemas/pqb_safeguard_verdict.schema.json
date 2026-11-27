@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rigeneproject.org/schemas/speace-pqb/v1/pqb_safeguard_verdict.schema.json",
+  "title": "PQBSafeguardVerdict",
+  "description": "SPEACE-PQB-STD-T007-EN Normative Annex A.2 — Machine-readable SHA-256 advisory decision record emitted by PQBTriadicSafeguardController.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "proposal_id",
+    "verdict",
+    "approved_for_advisory",
+    "reasons",
+    "pillar_metrics",
+    "initial_synergy_index",
+    "final_synergy_index",
+    "baseline_final_synergy_index",
+    "coupling_spectral_radius",
+    "max_collateral_crisis_delta",
+    "peak_propagated_crisis",
+    "habitat_evaluation",
+    "advisory_only",
+    "verdict_sha256"
+  ],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "APPROVED_ADVISORY",
+        "BLOCKED_CONSTITUTIONAL",
+        "BLOCKED_PQB_TELEMETRY_ENVELOPE",
+        "BLOCKED_PILLAR_FLOOR",
+        "BLOCKED_CROSS_PILLAR_SACRIFICE",
+        "BLOCKED_RISK_TRANSFER",
+        "BLOCKED_POLYCRISIS_AMPLIFICATION",
+        "BLOCKED_REFUGE_COERCION",
+        "BLOCKED_REFUGE_RESOURCE_DEFICIT"
+      ]
+    },
+    "approved_for_advisory": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "pillar_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["earth_biosphere", "human_civilization", "tech_infrastructure"],
+      "properties": {
+        "earth_biosphere": { "$ref": "#/$defs/PillarSummary" },
+        "human_civilization": { "$ref": "#/$defs/PillarSummary" },
+        "tech_infrastructure": { "$ref": "#/$defs/PillarSummary" }
+      }
+    },
+    "initial_synergy_index": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "final_synergy_index": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "baseline_final_synergy_index": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "coupling_spectral_radius": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "max_collateral_crisis_delta": {
+      "type": "number",
+      "minimum": -1.0,
+      "maximum": 1.0
+    },
+    "peak_propagated_crisis": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "habitat_evaluation": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "object" }
+      ]
+    },
+    "advisory_only": {
+      "const": true
+    },
+    "verdict_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "PillarSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pre_axis_min",
+        "post_axis_min",
+        "pre_mean",
+        "post_mean",
+        "worst_axis_delta",
+        "final_polycrisis_stress",
+        "projected_post_cascade_axis_min"
+      ],
+      "properties": {
+        "pre_axis_min": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "post_axis_min": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "pre_mean": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "post_mean": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "worst_axis_delta": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+        "final_polycrisis_stress": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "projected_post_cascade_axis_min": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    }
+  }
+}

@@ -36,7 +36,11 @@ from .continuity import (
 )
 from .orchestrator import BioOrchestrator
 from .organoid import SimulatedOrganoidAdapter, StimulationCommand
-from .pqb_safeguard import run_pqb_safeguard_benchmark
+from .pqb_safeguard import (
+    ConformanceProfileLevel,
+    build_conformance_manifest,
+    run_pqb_safeguard_benchmark,
+)
 
 app = typer.Typer(help="B-SPEACE biological & bio-inspired layer CLI")
 bcel_app = typer.Typer(help="BCEL biological-cybernetic equivalence catalog")
@@ -284,3 +288,38 @@ def safeguard_evaluate(
     typer.echo(rendered)
     if not report.strictly_beats_baselines:
         raise typer.Exit(3)
+
+
+@safeguard_app.command("conformance")
+def safeguard_conformance(
+    level: str = typer.Option(
+        "L3",
+        "--level",
+        "-l",
+        help="Clause 7 conformance profile: L1 | L2 | L3",
+    ),
+    system_id: str = typer.Option(
+        "b-speace-industry-pqb-reference",
+        "--system-id",
+        help="Identifier of the audited Industry P-Q-B system",
+    ),
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", "-o", help="Optional JSON output file for Clause 7 manifest"),
+    ] = None,
+) -> None:
+    """Emit a SHA-256 verifiable SPEACE-PQB-STD-T007-EN Clause 7 conformance manifest."""
+    level_map = {
+        "L1": ConformanceProfileLevel.L1_ADVISORY_CORE,
+        "L2": ConformanceProfileLevel.L2_SIMPLEX_PLANT,
+        "L3": ConformanceProfileLevel.L3_CIVIL_RESILIENCE_C8,
+    }
+    key = level.strip().upper()
+    if key not in level_map:
+        raise typer.BadParameter("level must be one of: L1, L2, L3")
+    manifest = build_conformance_manifest(system_id=system_id, level=level_map[key])
+    rendered = json.dumps(manifest.to_dict(), indent=2, sort_keys=True, allow_nan=False)
+    if out is not None:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(rendered + "\n", encoding="utf-8")
+    typer.echo(rendered)

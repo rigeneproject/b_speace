@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rigeneproject.org/schemas/speace-pqb/v1/pqb_conformance_manifest.schema.json",
+  "title": "PQBConformanceManifest",
+  "description": "SPEACE-PQB-STD-T007-EN Normative Annex A.3 — Clause 7 Conformance Profile Declaration & Evidence Bundle (Level 1 PQB-Advisory-Core, Level 2 PQB-Simplex-Plant, Level 3 PQB-Civil-Resilience-C8).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "standard_id",
+    "schema_version",
+    "system_id",
+    "conformance_profile",
+    "satisfied_clauses",
+    "profile_sha256",
+    "benchmark_report_sha256",
+    "schema_digests",
+    "eu_ai_act_annex_iv_mapped",
+    "ptaa_scc_track_a_only",
+    "advisory_only",
+    "autonomous_physical_actuation_permitted",
+    "manifest_sha256"
+  ],
+  "properties": {
+    "standard_id": {
+      "const": "SPEACE-PQB-STD-T007-EN"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "system_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conformance_profile": {
+      "type": "string",
+      "enum": [
+        "L1_PQB_ADVISORY_CORE",
+        "L2_PQB_SIMPLEX_PLANT",
+        "L3_PQB_CIVIL_RESILIENCE_C8"
+      ]
+    },
+    "satisfied_clauses": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "profile_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "benchmark_report_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "schema_digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pqb_campaign_proposal.schema.json",
+        "pqb_safeguard_verdict.schema.json",
+        "pqb_conformance_manifest.schema.json"
+      ],
+      "properties": {
+        "pqb_campaign_proposal.schema.json": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "pqb_safeguard_verdict.schema.json": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "pqb_conformance_manifest.schema.json": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "eu_ai_act_annex_iv_mapped": {
+      "type": "boolean"
+    },
+    "ptaa_scc_track_a_only": {
+      "const": true
+    },
+    "advisory_only": {
+      "const": true
+    },
+    "autonomous_physical_actuation_permitted": {
+      "const": false
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

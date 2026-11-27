@@ -13,10 +13,14 @@ from typer.testing import CliRunner
 from b_speace import (
     CME_FIELDS,
     CRISIS_DOMAINS,
+    JSON_SCHEMA_DRAFT_2020_12,
+    NORMATIVE_SCHEMA_FILES,
+    STANDARD_IDENTIFIER,
     TRIADIC_PILLAR_AXES,
     TRIADIC_PILLARS,
     BCELCatalog,
     BioregenerativeReserveSpec,
+    ConformanceProfileLevel,
     HabitatPlacementMode,
     PolycrisisCouplingModel,
     PolycrisisState,
@@ -32,8 +36,14 @@ from b_speace import (
     TriadicPillar,
     VoluntaryBioregenerativeHabitatPlan,
     VoluntaryHabitatTransfer,
+    build_conformance_manifest,
+    build_t006_pqb_scenarios,
+    compute_normative_schema_digests,
     evaluate_bioregenerative_habitat,
+    load_normative_schema,
     run_pqb_safeguard_benchmark,
+    validate_top_level_schema_contract,
+    verify_conformance_manifest,
     verify_pqb_cme_partition,
 )
 from b_speace.cli import app
@@ -309,3 +319,85 @@ def test_t006_benchmark_and_cli(tmp_path: Path) -> None:
     data = json.loads(out_path.read_text(encoding="utf-8"))
     assert data["report_sha256"] == report.report_sha256
     assert data["strictly_beats_baselines"] is True
+
+
+def test_t007_normative_json_schemas_and_conformance_profiles(tmp_path: Path) -> None:
+    # 1. All 3 Draft 2020-12 schemas load cleanly and enforce closed properties
+    digests = compute_normative_schema_digests()
+    assert len(digests) == 3
+    for fname in NORMATIVE_SCHEMA_FILES:
+        schema = load_normative_schema(fname)
+        assert schema["$schema"] == JSON_SCHEMA_DRAFT_2020_12
+        assert schema["additionalProperties"] is False
+        assert len(digests[fname]) == 64
+
+    with pytest.raises(PQBSafeguardValidationError, match="unknown normative schema"):
+        load_normative_schema("nonexistent.schema.json")
+
+    # 2. Validate real proposal and verdict dicts against Annex A.1 & A.2 top-level contracts
+    ctrl = PQBTriadicSafeguardController()
+    sc = build_t006_pqb_scenarios()[-1]
+    prop_payload = {
+        "proposal_id": sc.proposal.proposal_id,
+        "proposer_id": sc.proposal.proposer_id,
+        "reviewer_id": sc.proposal.reviewer_id,
+        "human_oversight_approved": sc.proposal.human_oversight_approved,
+        "pre_cme": sc.proposal.pre_cme.to_dict(),
+        "post_cme": sc.proposal.post_cme.to_dict(),
+        "initial_crisis": sc.proposal.initial_crisis.to_dict(),
+        "crisis_intervention": sc.proposal.intervention_map(),
+        "telemetry": {
+            "q_active": sc.proposal.telemetry.q_active,
+            "sevo": sc.proposal.telemetry.sevo,
+            "q_uncertainty": sc.proposal.telemetry.q_uncertainty,
+            "b_biosensor_active": sc.proposal.telemetry.b_biosensor_active,
+            "b_reference_disagreement": sc.proposal.telemetry.b_reference_disagreement,
+            "wetware_active": sc.proposal.telemetry.wetware_active,
+            "wetware_envelope_compliant": sc.proposal.telemetry.wetware_envelope_compliant,
+            "estimated_power_w": sc.proposal.telemetry.estimated_power_w,
+        },
+        "habitat_plan": None,
+    }
+    validate_top_level_schema_contract("pqb_campaign_proposal.schema.json", prop_payload)
+    verdict_dict = ctrl.evaluate(sc.proposal).to_dict()
+    validate_top_level_schema_contract("pqb_safeguard_verdict.schema.json", verdict_dict)
+
+    # Extra key or non-finite value rejected fail-closed
+    with pytest.raises(PQBSafeguardValidationError, match="forbidden additional keys"):
+        validate_top_level_schema_contract(
+            "pqb_safeguard_verdict.schema.json",
+            {**verdict_dict, "rogue_field": 1},
+        )
+    with pytest.raises(PQBSafeguardValidationError, match="RFC 8259"):
+        validate_top_level_schema_contract(
+            "pqb_safeguard_verdict.schema.json",
+            {**verdict_dict, "peak_propagated_crisis": math.nan},
+        )
+
+    # 3. Build and verify L1, L2, and L3 Clause 7 Conformance Manifests (Annex A.3)
+    for level in ConformanceProfileLevel:
+        manifest = build_conformance_manifest(system_id="eu-iso-audit-node", level=level)
+        m_dict = manifest.to_dict()
+        assert m_dict["standard_id"] == STANDARD_IDENTIFIER
+        assert verify_conformance_manifest(m_dict) is True
+
+        # Tampering with actuation flag or hash invalidates verification
+        assert (
+            verify_conformance_manifest({**m_dict, "autonomous_physical_actuation_permitted": True})
+            is False
+        )
+        assert verify_conformance_manifest({**m_dict, "system_id": "tampered-node"}) is False
+
+    # 4. CLI conformance export test
+    manifest_file = tmp_path / "l3_conformance.json"
+    runner = CliRunner()
+    res = runner.invoke(
+        app,
+        ["safeguard", "conformance", "--level", "L3", "--out", str(manifest_file)],
+    )
+    assert res.exit_code == 0, res.output
+    loaded_manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    assert verify_conformance_manifest(loaded_manifest) is True
+
+    bad_res = runner.invoke(app, ["safeguard", "conformance", "--level", "L99"])
+    assert bad_res.exit_code != 0

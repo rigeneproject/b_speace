@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rigeneproject.org/schemas/speace-pqb/v1/pqb_campaign_proposal.schema.json",
+  "title": "PQBCampaignProposal",
+  "description": "SPEACE-PQB-STD-T007-EN Normative Annex A.1 — Machine-readable input contract for Industry P-Q-B Triadic Safeguard, Anti-Polycrisis, and C8 Voluntary Bioregenerative Habitat evaluation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "proposal_id",
+    "proposer_id",
+    "reviewer_id",
+    "human_oversight_approved",
+    "pre_cme",
+    "post_cme",
+    "initial_crisis",
+    "crisis_intervention",
+    "telemetry"
+  ],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "human_oversight_approved": {
+      "type": "boolean"
+    },
+    "pre_cme": {
+      "$ref": "#/$defs/PQBCapitalVector"
+    },
+    "post_cme": {
+      "$ref": "#/$defs/PQBCapitalVector"
+    },
+    "initial_crisis": {
+      "$ref": "#/$defs/PolycrisisState"
+    },
+    "crisis_intervention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "climatic_ecological": { "$ref": "#/$defs/SignedUnitInterval" },
+        "economic": { "$ref": "#/$defs/SignedUnitInterval" },
+        "social": { "$ref": "#/$defs/SignedUnitInterval" },
+        "sanitary": { "$ref": "#/$defs/SignedUnitInterval" },
+        "cyber_infrastructural": { "$ref": "#/$defs/SignedUnitInterval" }
+      }
+    },
+    "telemetry": {
+      "$ref": "#/$defs/PQBTelemetrySnapshot"
+    },
+    "habitat_plan": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/VoluntaryBioregenerativeHabitatPlan" }
+      ]
+    }
+  },
+  "$defs": {
+    "UnitInterval": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "SignedUnitInterval": {
+      "type": "number",
+      "minimum": -1.0,
+      "maximum": 1.0
+    },
+    "PQBCapitalVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "energy",
+        "matter",
+        "information",
+        "time",
+        "ecology",
+        "resilience",
+        "wellbeing",
+        "innovation",
+        "reversibility",
+        "distribution",
+        "coherence",
+        "regeneration"
+      ],
+      "properties": {
+        "energy": { "$ref": "#/$defs/UnitInterval" },
+        "matter": { "$ref": "#/$defs/UnitInterval" },
+        "information": { "$ref": "#/$defs/UnitInterval" },
+        "time": { "$ref": "#/$defs/UnitInterval" },
+        "ecology": { "$ref": "#/$defs/UnitInterval" },
+        "resilience": { "$ref": "#/$defs/UnitInterval" },
+        "wellbeing": { "$ref": "#/$defs/UnitInterval" },
+        "innovation": { "$ref": "#/$defs/UnitInterval" },
+        "reversibility": { "$ref": "#/$defs/UnitInterval" },
+        "distribution": { "$ref": "#/$defs/UnitInterval" },
+        "coherence": { "$ref": "#/$defs/UnitInterval" },
+        "regeneration": { "$ref": "#/$defs/UnitInterval" }
+      }
+    },
+    "PolycrisisState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "climatic_ecological",
+        "economic",
+        "social",
+        "sanitary",
+        "cyber_infrastructural"
+      ],
+      "properties": {
+        "climatic_ecological": { "$ref": "#/$defs/UnitInterval" },
+        "economic": { "$ref": "#/$defs/UnitInterval" },
+        "social": { "$ref": "#/$defs/UnitInterval" },
+        "sanitary": { "$ref": "#/$defs/UnitInterval" },
+        "cyber_infrastructural": { "$ref": "#/$defs/UnitInterval" }
+      }
+    },
+    "PQBTelemetrySnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "q_active",
+        "sevo",
+        "q_uncertainty",
+        "b_biosensor_active",
+        "b_reference_disagreement",
+        "wetware_active",
+        "wetware_envelope_compliant",
+        "estimated_power_w"
+      ],
+      "properties": {
+        "q_active": { "type": "boolean" },
+        "sevo": { "type": "number", "minimum": 0.0 },
+        "q_uncertainty": { "$ref": "#/$defs/UnitInterval" },
+        "b_biosensor_active": { "type": "boolean" },
+        "b_reference_disagreement": { "$ref": "#/$defs/UnitInterval" },
+        "wetware_active": { "type": "boolean" },
+        "wetware_envelope_compliant": { "type": "boolean" },
+        "estimated_power_w": { "type": "number", "minimum": 0.0 }
+      }
+    },
+    "BioregenerativeReserveSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "water_liters_per_day_total",
+        "food_kcal_per_day_total",
+        "oxygen_kg_per_day_total",
+        "clean_power_kw_total",
+        "medical_sanitary_index",
+        "psychosocial_wellbeing_index",
+        "autonomy_reserve_days",
+        "closed_loop_recycling_efficiency",
+        "environmental_shielding_integrity",
+        "biosensor_reference_verified",
+        "redundancy_factor"
+      ],
+      "properties": {
+        "water_liters_per_day_total": { "type": "number", "minimum": 0.0 },
+        "food_kcal_per_day_total": { "type": "number", "minimum": 0.0 },
+        "oxygen_kg_per_day_total": { "type": "number", "minimum": 0.0 },
+        "clean_power_kw_total": { "type": "number", "minimum": 0.0 },
+        "medical_sanitary_index": { "$ref": "#/$defs/UnitInterval" },
+        "psychosocial_wellbeing_index": { "$ref": "#/$defs/UnitInterval" },
+        "autonomy_reserve_days": { "type": "number", "minimum": 0.0 },
+        "closed_loop_recycling_efficiency": { "$ref": "#/$defs/UnitInterval" },
+        "environmental_shielding_integrity": { "$ref": "#/$defs/UnitInterval" },
+        "biosensor_reference_verified": { "type": "boolean" },
+        "redundancy_factor": { "type": "number", "minimum": 1.25 }
+      }
+    },
+    "VoluntaryHabitatTransfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "persons_count",
+        "motivation",
+        "voluntary_consent_verified",
+        "free_exit_acknowledged",
+        "coercive_assignment"
+      ],
+      "properties": {
+        "request_id": { "type": "string", "minLength": 1 },
+        "persons_count": { "type": "integer", "minimum": 1 },
+        "motivation": {
+          "type": "string",
+          "enum": ["polycrisis_protection", "personal_wellbeing"]
+        },
+        "voluntary_consent_verified": { "type": "boolean" },
+        "free_exit_acknowledged": { "type": "boolean" },
+        "coercive_assignment": { "type": "boolean" }
+      }
+    },
+    "VoluntaryBioregenerativeHabitatPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "habitat_id",
+        "placement",
+        "target_civilization_population",
+        "requested_occupancy",
+        "reserves",
+        "voluntary_opt_in_only",
+        "free_exit_guaranteed",
+        "coercive_relocation_forbidden",
+        "universal_non_discriminatory_access",
+        "transfer_requests"
+      ],
+      "properties": {
+        "habitat_id": { "type": "string", "minLength": 1 },
+        "placement": {
+          "type": "string",
+          "enum": ["terrestrial", "extraterrestrial", "hybrid_federated"]
+        },
+        "target_civilization_population": { "type": "integer", "minimum": 1 },
+        "requested_occupancy": { "type": "integer", "minimum": 0 },
+        "reserves": { "$ref": "#/$defs/BioregenerativeReserveSpec" },
+        "voluntary_opt_in_only": { "type": "boolean" },
+        "free_exit_guaranteed": { "type": "boolean" },
+        "coercive_relocation_forbidden": { "type": "boolean" },
+        "universal_non_discriminatory_access": { "type": "boolean" },
+        "transfer_requests": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/VoluntaryHabitatTransfer" }
+        }
+      }
+    }
+  }
+}

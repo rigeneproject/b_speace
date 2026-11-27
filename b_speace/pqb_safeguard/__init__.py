@@ -9,6 +9,20 @@ from .benchmark import (
     build_t006_pqb_scenarios,
     run_pqb_safeguard_benchmark,
 )
+from .conformance import (
+    JSON_SCHEMA_DRAFT_2020_12,
+    NORMATIVE_SCHEMA_FILES,
+    PROFILE_REQUIRED_CLAUSES,
+    STANDARD_IDENTIFIER,
+    ConformanceProfileLevel,
+    PQBConformanceManifest,
+    build_conformance_manifest,
+    compute_normative_schema_digests,
+    load_normative_schema,
+    schemas_directory,
+    validate_top_level_schema_contract,
+    verify_conformance_manifest,
+)
 from .evaluator import (
     DEFAULT_CRISIS_DAMPING,
     DEFAULT_PILLAR_EXPOSURE,
@@ -94,4 +108,16 @@ __all__ = [
     "evaluate_bioregenerative_habitat",
     "run_pqb_safeguard_benchmark",
     "verify_pqb_cme_partition",
+    "ConformanceProfileLevel",
+    "JSON_SCHEMA_DRAFT_2020_12",
+    "NORMATIVE_SCHEMA_FILES",
+    "PQBConformanceManifest",
+    "PROFILE_REQUIRED_CLAUSES",
+    "STANDARD_IDENTIFIER",
+    "build_conformance_manifest",
+    "compute_normative_schema_digests",
+    "load_normative_schema",
+    "schemas_directory",
+    "validate_top_level_schema_contract",
+    "verify_conformance_manifest",
 ]
