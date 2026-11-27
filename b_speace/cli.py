@@ -36,6 +36,7 @@ from .continuity import (
 )
 from .orchestrator import BioOrchestrator
 from .organoid import SimulatedOrganoidAdapter, StimulationCommand
+from .pqb_safeguard import run_pqb_safeguard_benchmark
 
 app = typer.Typer(help="B-SPEACE biological & bio-inspired layer CLI")
 bcel_app = typer.Typer(help="BCEL biological-cybernetic equivalence catalog")
@@ -44,6 +45,7 @@ organoid_app = typer.Typer(help="Wetware-in-the-loop computational organoid twin
 bridge_app = typer.Typer(help="Hybrid B-SPEACE <-> Q-SPEACE orchestrator")
 benchmark_app = typer.Typer(help="Industry P-Q-B closed-loop benchmarks (T003)")
 continuity_app = typer.Typer(help="T005 functional continuity verification (M0/M1)")
+safeguard_app = typer.Typer(help="T006 Industry P-Q-B triadic safeguard & habitat protocol")
 
 app.add_typer(bcel_app, name="bcel")
 app.add_typer(bio_app, name="bio")
@@ -51,6 +53,7 @@ app.add_typer(organoid_app, name="organoid")
 app.add_typer(bridge_app, name="bridge")
 app.add_typer(benchmark_app, name="benchmark")
 app.add_typer(continuity_app, name="continuity")
+app.add_typer(safeguard_app, name="safeguard")
 
 
 @bcel_app.command("list")
@@ -263,3 +266,21 @@ def continuity_evaluate(
         "bundle_files": written,
     }
     typer.echo(json.dumps(payload, indent=2))
+
+
+@safeguard_app.command("evaluate")
+def safeguard_evaluate(
+    out: Annotated[
+        Path | None,
+        typer.Option("--out", "-o", help="Optional JSON output file for T006 report"),
+    ] = None,
+) -> None:
+    """Run the T006 Industry P-Q-B triadic safeguard & voluntary habitat benchmark."""
+    report = run_pqb_safeguard_benchmark()
+    rendered = json.dumps(report.to_dict(), indent=2, sort_keys=True, allow_nan=False)
+    if out is not None:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(rendered + "\n", encoding="utf-8")
+    typer.echo(rendered)
+    if not report.strictly_beats_baselines:
+        raise typer.Exit(3)

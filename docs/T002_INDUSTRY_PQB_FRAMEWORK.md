@@ -1,9 +1,11 @@
 # T002 — Industry P–Q–B: Hybrid Classical–Quantum–Biological Computing Architecture
 
-- **Status**: Conceptual Framework & Evaluation Reference (v0.1.0)
+- **Status**: Conceptual Framework & Evaluation Reference (v0.2.0 — extended by [T006](T006_INDUSTRY_PQB_TRIADIC_SAFEGUARD_SPEC.md) / `q_speace` T254)
 - **Scope**: Systemic P–Q–B architecture, closed-loop uncertainty governance,
-  worked industrial case study (water-treatment filter development), and
-  ablation methodology for `b_speace` and `q_speace`.
+  worked industrial case study (water-treatment filter development), ablation
+  methodology, and triadic planetary/civilizational/infrastructural safeguarding
+  (including anti-polycrisis governance and voluntary protective habitats) for
+  `b_speace` and `q_speace`.
 
 ## 1. Architecture Overview
 
@@ -128,3 +130,55 @@ must be tested against current practice and partial configurations:
   sentience, or self-validating operational autonomy is implied. Every layer is
   treated strictly as a calibrated, falsifiable computational resource subject
   to safety envelopes and empirical ablation.
+
+---
+
+## 5. Triadic Safeguarding, Anti-Polycrisis Governance & Voluntary Protective Habitats (`T006` / `q_speace` `T254`)
+
+Because industrial, quantum, and biological computing workflows operate within and
+depend upon three constitutive substrates—**Planet Earth (`earth_biosphere`)**,
+**Human Civilization (`human_civilization`)**, and **Critical Technologies &
+Infrastructures (`tech_infrastructure`)**—**Industry P–Q–B** embeds the constitutional
+safeguarding criteria formalized in [T006](T006_INDUSTRY_PQB_TRIADIC_SAFEGUARD_SPEC.md)
+(aligned 1-to-1 with `q_speace` `T254`):
+
+1. **Non-Compensable Triadic Viability (`C6`)**:
+   - The 12 non-fungible capital stocks (`CME`: `ecology`, `regeneration`, `matter`,
+     `coherence`, `wellbeing`, `distribution`, `time`, `innovation`, `energy`,
+     `information`, `resilience`, `reversibility`) are partitioned $3 \times 4$
+     across the three constitutive substrates.
+   - No `P–Q–B` industrial optimization (e.g., higher throughput, lower monetary cost,
+     or higher computational efficiency) can ever compensate for breaching the
+     minimum viability floor of Earth's biosphere, human health/social equity, or
+     critical infrastructure reversibility, nor sacrifice a healthy axis beyond
+     `max_single_axis_sacrifice`.
+   - When `B` involves wetware/organoid interfaces or biosensors, `WetwareSafetyEnvelope`
+     and reference analytical checks (`Simplex` fallback on biosensor drift or `Q`
+     uncertainty/`Sevo < 1.5`) act as hard physical brakes.
+2. **Anti-Polycrisis Cascade & Anti-Risk-Transfer Shield (`C7`)**:
+   - Coexisting, mutually reinforcing crises (`climatic_ecological`, `economic`,
+     `social`, `sanitary`, `cyber_infrastructural`) are evaluated via coupled
+     multi-step propagation $s^{(t+1)} = \mathrm{clip}((1-\gamma)\odot s^{(t)} + W s^{(t)} + u, 0, 1)$.
+   - In **Industry P–Q–B**, `B` provides rapid low-energy in-situ environmental/sanitary
+     screening (verified against reference assays), `Q` evaluates selective remediation
+     or catalytic materials under `Sevo` gates, and `P` blocks any candidate process
+     that transfers collateral risk across crisis domains ($\Delta^{\max}_q(u) > \delta_{\mathrm{collateral}}$)
+     or amplifies systemic polycrisis synergy $\Pi(s)$.
+3. **Voluntary Artificial Protective & Bioregenerative Habitats (`C8`)**:
+   - **Industry P–Q–B** supports the engineering specification and closed-loop
+     monitoring of resilient artificial human habitats (`terrestrial`,
+     `extraterrestrial`, or `hybrid_federated`) equipped for complete human survival
+     and wellbeing:
+     - **`P` layer**: verifies `N+2` (`redundancy_factor >= 1.25`) Leontief life-support
+       capacity across water, nutrition, oxygen/$\text{CO}_2$ scrubbing, clean power,
+       medical-sanitary care, and psychosocial wellbeing space, plus strict individual
+       voluntariness (`voluntary_opt_in_only`, `free_exit_guaranteed`, zero coercion)
+       whether motivated by `polycrisis_protection` or `personal_wellbeing`.
+     - **`Q` layer**: evaluates molecular/catalytic filtration and closed-loop air/water
+       regeneration candidates (extending §2 water-filter workflows) under `Sevo` bounds.
+     - **`B` layer**: monitors closed-loop water/air/nutrient potability via calibrated
+       cell-free biosensors paired with mandatory reference assays (preventing biosensor
+       drift from silently compromising habitat life-support).
+   - **Non-Abandonment Invariant**: building or stocking a protective habitat must
+     never degrade Planet Earth or external human civilization; all evaluations remain
+     *simulation and advisory-only* without autonomous physical actuation.

@@ -179,6 +179,36 @@ _BIO_EQUIVALENCES: tuple[BCELEquivalence, ...] = (
             "replicas, never continuation of first-person subjective experience."
         ),
     ),
+    # --- T006: Industry P-Q-B Triadic Safeguard, Anti-Polycrisis & Voluntary Habitat (q_speace T254) ---
+    BCELEquivalence(
+        concept="Planetary organism gestation or infallible off-world ark teleology (T006)",
+        classification="accidental",
+        digital_rule=(
+            "Removed from runtime claims: P-Q-B software and wetware twins hold zero "
+            "conscious planetary identity, cannot guarantee physical survival without "
+            "real-world civil/aerospace/ecological qualification, and forbid coercive "
+            "relocation or abandonment of Earth's biosphere."
+        ),
+    ),
+    BCELEquivalence(
+        concept="Industry P-Q-B non-compensable triadic substrate & polycrisis shield (T006)",
+        classification="functional",
+        digital_rule=(
+            "Keep as an exact 3x4 CME Leontief floor check over Earth, Human Civilization, "
+            "and Tech Infrastructure coupled with 5-domain discrete polycrisis propagation, "
+            "anti-risk-transfer bounds, and P-Q-B Simplex Sevo/biosensor/wetware gates (C6, C7)."
+        ),
+    ),
+    BCELEquivalence(
+        concept="P-Q-B bioregenerative voluntary protective habitat protocol (T006)",
+        classification="functional",
+        digital_rule=(
+            "Keep as opt-in individual admission and guaranteed free exit (polycrisis_protection "
+            "or personal_wellbeing), N+2 Leontief capacity across water, food, oxygen, clean "
+            "power, medical, and psychosocial wellbeing stocks, reference-verified B-layer "
+            "loop monitoring, and non-abandonment of Earth (C8)."
+        ),
+    ),
 )
 
 
